@@ -1,5 +1,5 @@
 package Devel::Cycle;
-# $Id: Cycle.pm,v 1.13 2008/07/09 01:26:45 lstein Exp $
+# $Id: Cycle.pm,v 1.15 2009/08/24 12:51:02 lstein Exp $
 
 use 5.006001;
 use strict;
@@ -17,7 +17,7 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(find_cycle find_weakened_cycle);
 our @EXPORT_OK = qw($FORMATTING);
-our $VERSION = '1.10';
+our $VERSION = '1.11';
 our $FORMATTING = 'roasted';
 our $QUIET   = 0;
 
@@ -120,9 +120,9 @@ sub _find_cycle_SCALAR {
   my $complain  = shift;
   my @report  = @_;
 
-  return if !$inc_weak_refs && isweak($current);
+  return if !$inc_weak_refs && isweak($$current);
   _find_cycle($$current,{%$seenit},$callback,$inc_weak_refs,$complain,
-              (@report,['SCALAR',undef,$current => $$current,$inc_weak_refs?isweak($current):()]));
+              (@report,['SCALAR',undef,$current => $$current,$inc_weak_refs?isweak($$current):()]));
 }
 
 sub _find_cycle_ARRAY {
